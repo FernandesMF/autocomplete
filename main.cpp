@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sys/stat.h>
 #include "nlohmann/json.hpp"
+#include "collector.h"
 
 using json = nlohmann::json;
 #define OUT         // useful tag to remind of output references
