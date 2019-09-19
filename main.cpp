@@ -2,7 +2,7 @@
 #include <fstream>
 #include <sys/stat.h>
 #include "nlohmann/json.hpp"
-#include "collector.h"
+#include "autocompletedata.h"
 
 using json = nlohmann::json;
 #define OUT         // useful tag to remind of output references
@@ -11,14 +11,26 @@ bool ArgCountProblem(int, char**);
 void CreateMockJson(std::string);
 void WriteJson(std::string,json);
 
-int main(int argc, char* argv[]){    
-    
+FAutoCompleteData ACData;   // start an instance of the autocomplete class (autocompletedata.h)
+
+int main(int argc, char* argv[])
+{    
     if(ArgCountProblem(argc,argv)){ return 1; } // check command line inputs
 
     // Preparatory steps
     try{ CreateMockJson(argv[1]); }     // create json file with events
-    catch(const std::runtime_error& e){ std::cerr << e.what() << '\n'; }
-    // collect that data in the collector class
+    catch(const std::runtime_error& e){ 
+        std::cerr << e.what() << '\n';
+        return 1;
+    }
+    
+    /*
+    try{ ACData.EventNamesAlphabetic(argv[1]); }   // collect that data in the collector class
+    catch(const std::runtime_error& e){ 
+        std::cerr << e.what() << '\n';
+        return 1;
+    }
+    */
 
     // Print starting message (special commands)
 
@@ -32,7 +44,8 @@ int main(int argc, char* argv[]){
     return 0;
 }
 
-bool ArgCountProblem(int argc, char* argv[]){
+bool ArgCountProblem(int argc, char* argv[])
+{
     if(argc!=2){
         std::cout << "Wrong number of input arguments. You should enter";
         std::cout << " (1) the name of the file to use as mock Json data ";
@@ -45,7 +58,8 @@ bool ArgCountProblem(int argc, char* argv[]){
     return false;
 }
 
-void CreateMockJson(std::string FileName){
+void CreateMockJson(std::string FileName)
+{
     json MockJson;
 
     std::cout << "Creating mock Json file.\n";
@@ -72,7 +86,8 @@ void CreateMockJson(std::string FileName){
 }
 
 // Writes a Json file from a a json variable
-void WriteJson(std::string FileName,json JsonData){
+void WriteJson(std::string FileName,json JsonData)
+{
     std::ofstream TimelineFile;
     struct stat buf;
 
