@@ -1,0 +1,8 @@
+
+
+
+class FColector{
+    public:
+
+    private:
+}
