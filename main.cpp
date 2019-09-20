@@ -26,9 +26,11 @@ int main(int argc, char* argv[])
     
     try{ ACData.EventNamesAlphabetic(argv[1]); }   // collect that data in the collector class
     catch(const std::runtime_error& e){ 
-        std::cerr << e.what() << '\n';
-        return 1;
+        std::cerr << e.what() << '\n';     
+       return 1;
     }
+    
+    
 
     // Print starting message (special commands)
 

@@ -1,12 +1,13 @@
-//#pragma once
+#pragma once
+#include <iostream>
 #include <fstream>
 #include <string>
-//#include <vector>
 #include <deque>
 #include "nlohmann/json.hpp"
 
 using json = nlohmann::json;
 using FString = std::string;
+#define OUT // useful output reminder
 
 
 class FAutoCompleteData
@@ -28,5 +29,7 @@ class FAutoCompleteData
         int FinIndex;
         
         void ReadJson(FString FileName, json &JsonData);  // function to read a Json file
+        FString GetEventName(json &JsonData, int index); // reads name of event at index in JsonData
+        void MakeInsertion(FString EventName ); // inserts EventName at the correct position
 
 };
