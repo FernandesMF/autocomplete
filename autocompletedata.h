@@ -12,11 +12,11 @@ using FString = std::string;
 class FAutoCompleteData
 {
     public:
-
+        
         FAutoCompleteData();    // constructor(s)
         void Constructor();
 
-        void EventNamesAlphabetic(std::string FileName); // call to read json data, and store it in internal "list"
+        void EventNamesAlphabetic(std::string FileName); // read json data and store it in internal "list"
 
         // function to return entries that match two beginning letters
 
