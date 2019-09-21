@@ -28,7 +28,7 @@ class FAutoCompleteData
         int BegIndex;       // indexes of first and last entries that will have to be returned
         int FinIndex;
         
-        void ReadJson(FString FileName, json &JsonData);  // function to read a Json file
+        void ImportJsonData(FString FileName, json &JsonData);  // function to read a Json file
         FString GetEventName(json &JsonData, int index); // reads name of event at index in JsonData
         void MakeInsertion(FString EventName ); // inserts EventName at the correct position
 

@@ -11,6 +11,8 @@ bool ArgCountProblem(int, char**);
 void CreateMockJson(std::string);
 void WriteJson(std::string,json);
 
+// TODO write mock json only if it doesn't exist??
+
 FAutoCompleteData ACData;   // start an instance of the autocomplete class (autocompletedata.h)
 
 int main(int argc, char* argv[])

@@ -21,26 +21,23 @@ void FAutoCompleteData::EventNamesAlphabetic(FString FileName)
     FString EventName = "";
     int InsertionIndex = -1;
 
-    ReadJson(FileName, OUT JsonDataRef);
+    ImportJsonData(FileName, OUT JsonDataRef);
     std::cout << "EvenNamesAlphabetic: JsonData size: " << JsonData.size() << std::endl;
     std::cout << "----------------------------------\n";
     for(int r = 0; r<JsonData.size() ; r++){
         EventName = GetEventName(JsonData, r);      // get event name
-        std::cout << "EventNamesALphabetic: EventName= " << EventName << std::endl;     //FIXME remove
         MakeInsertion(EventName);                   // insert at the appropriate position
-
-        std::cout << "EventNamesAlphabetic: list of event names (r= " << r <<"):\n";    //FIXME remove these prints
-        for(int i=0; i<OrderedEventNames.size(); i++){ std::cout << OrderedEventNames[i] << std::endl;}
-        std::cout << "EventNamesAlphabetic: list of ocurrences (r= " << r <<"):\n";    //FIXME remove these prints
-        for(int i=0; i<OrderedEventNames.size(); i++){ std::cout << Ocurrences[i] << std::endl;}
-        std::cout << std::endl << std::endl;
     }       
+    std::cout << "EventNamesAlphabetic: list of event names:\n";    //FIXME remove these prints
+    for(int i=0; i<OrderedEventNames.size(); i++){ std::cout << OrderedEventNames[i] << std::endl;}
+    std::cout << "EventNamesAlphabetic: list of ocurrences:\n";    //FIXME remove these prints
+    for(int i=0; i<OrderedEventNames.size(); i++){ std::cout << Ocurrences[i] << std::endl;}
 
     return;
 }
 
 // TODO change namne to ImportJsonData?
-void FAutoCompleteData::ReadJson(FString FileName, json &JsonData)
+void FAutoCompleteData::ImportJsonData(FString FileName, json &JsonData)
 {
     std::ifstream EventsFile(FileName, std::ifstream::binary);
     if( EventsFile.fail() ){ throw std::runtime_error("Error opening input file."); }
