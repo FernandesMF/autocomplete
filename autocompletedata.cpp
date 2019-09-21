@@ -36,7 +36,6 @@ void FAutoCompleteData::EventNamesAlphabetic(FString FileName)
     return;
 }
 
-// TODO change namne to ImportJsonData?
 void FAutoCompleteData::ImportJsonData(FString FileName, json &JsonData)
 {
     std::ifstream EventsFile(FileName, std::ifstream::binary);
@@ -78,4 +77,23 @@ void FAutoCompleteData::MakeInsertion(FString EventName )
         Ocurrences.emplace_back(1);                     // insert a 1 at end
     }
     return;
+}
+
+EInput CheckInputValidity(FString Input)
+{
+    if( strcmp(Input.c_str(),":q") == 0 ){
+        return EInput::SC_Quit;
+    } else if( strcmp(Input.c_str(),":l") == 0 ) {
+        return EInput::SC_Show_ACData;
+    } else if ( IsAlphaPair(Input) ){
+        return EInput::Valid_Alpha_Pair;
+    } else{
+        return EInput::Invalid;
+    }
+}
+
+bool IsAlphaPair(FString Input)
+{
+    // TODO HERE!! continue from here; implement this check
+    return false;
 }

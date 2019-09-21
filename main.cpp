@@ -10,6 +10,8 @@ using json = nlohmann::json;
 bool ArgCountProblem(int, char**);
 void CreateMockJson(std::string);
 void WriteJson(std::string,json);
+void PrintSpecialCommands();
+FString GetUserInput();
 
 // TODO write mock json only if it doesn't exist??
 
@@ -32,14 +34,17 @@ int main(int argc, char* argv[])
        return 1;
     }    
 
-    // Print starting message (special commands)
+    void PrintSpecialCommands();
 
+    FString UserInput = "";
     // User input loop (while quit command is not given)
-        // Ask user input
-        // Check for special command
-        // Check input validity (two letters)
-        // Call autocomplete function
-        // print back autocomplete loop
+    do{
+        UserInput = GetUserInput();             // Ask user input
+        // Check input validity (two letters or special command; switch) 
+            // Execute special command
+            // Call autocomplete function
+            // Warn for invalid input
+    } while(UserInput != ":q");
 
     return 0;
 }
@@ -101,4 +106,20 @@ void WriteJson(std::string FileName,json JsonData)
     if( TimelineFile.fail() ){ throw std::runtime_error("Error closing output file."); }
 
     return;
+}
+
+//TODO implement this
+void PrintSpecialCommands()
+{
+    // list special commands
+    std::cout << "PrintSpecialCommands: LIST OF COMMANDS AND INSTRUCTIONS GO HERE\n";
+    return;
+}
+
+FString GetUserInput()
+{
+    FString Input;
+    std::cout << "Please enter: (1) two letters or (2) a special command:\n";
+    std::cin >> Input;
+    return Input;
 }
