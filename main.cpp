@@ -28,9 +28,7 @@ int main(int argc, char* argv[])
     catch(const std::runtime_error& e){ 
         std::cerr << e.what() << '\n';     
        return 1;
-    }
-    
-    
+    }    
 
     // Print starting message (special commands)
 
@@ -58,6 +56,7 @@ bool ArgCountProblem(int argc, char* argv[])
     return false;
 }
 
+// TODO make a longer, more interesting json file (test ocurrence ordering, and similar ocurrences)
 void CreateMockJson(std::string FileName)
 {
     json MockJson;

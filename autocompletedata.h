@@ -22,7 +22,7 @@ class FAutoCompleteData
         // function to return entries that match two beginning letters
 
     private:
-         
+        //TODO comment on why deque and not set/map or vector
         std::deque<FString> OrderedEventNames; // "list" to hold the event names (in alphabetical order)
         std::deque<int> Ocurrences;    // "list" to hold ocurrences (and make suggestions based on that)
         int BegIndex;       // indexes of first and last entries that will have to be returned
