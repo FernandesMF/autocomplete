@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <deque>
+#include <math.h>
 #include "nlohmann/json.hpp"
 
 using json = nlohmann::json;
@@ -30,6 +31,7 @@ class FAutoCompleteData
         EInput CheckInputValidity(FString Input);
         void PrintSpecialCommands();
         void ShowAccumulatedData();
+        std::deque<FString> Autocomplete(FString Input);
 
     private:
         //TODO comment on why deque and not set/map or vector

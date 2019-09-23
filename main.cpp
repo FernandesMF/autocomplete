@@ -14,7 +14,7 @@ FString GetUserInput();
 
 // TODO write mock json only if it doesn't exist??
 
-FAutoCompleteData ACData;   // start an instance of the autocomplete class (autocompletedata.h)
+FAutoCompleteData ACData;   // start an instance of the autocomplete class (autocompletedata.h) globally
 
 int main(int argc, char* argv[])
 {    
@@ -36,6 +36,7 @@ int main(int argc, char* argv[])
     ACData.PrintSpecialCommands();
 
     FString UserInput = "";
+    std::deque<FString> Suggestions;
     // User input loop (while quit command is not given)
     do{
         UserInput = GetUserInput();             // Ask user input
@@ -52,8 +53,10 @@ int main(int argc, char* argv[])
             ACData.PrintSpecialCommands();
             break;
         case EInput::Valid :
-            std::cout << "Fetching suggestions for \"" << UserInput << "\"\n";
-            std::cout << "(coming soon...)\n";
+            std::cout << "Fetching suggestions for \"" << UserInput << "\"...";
+            Suggestions = ACData.Autocomplete(UserInput);
+            std::cout << " found " << Suggestions.size() << ":\n";
+            for(int i=0; i<Suggestions.size(); i++){ std::cout << Suggestions[i] << std::endl;}
         }
         std::cout << std::endl << std::endl;
     } while(UserInput != ":q");
@@ -123,7 +126,7 @@ void WriteJson(std::string FileName,json JsonData)
 FString GetUserInput()
 {
     FString Input;
-    std::cout << "Please enter: a string to autocomplete or a special command:\n";
+    std::cout << "Please enter: a string to autocomplete or a special command (:h for help):\n";
     std::cin >> Input;
     return Input;
 }

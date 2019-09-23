@@ -109,6 +109,61 @@ void FAutoCompleteData::PrintSpecialCommands()
     std::cout << "The special commands to interface with this program are the following>\n";
     std::cout << ":q --> quit\n";
     std::cout << ":l --> list the data accumulated for suggestions\n";
-    std::cout << ":h --> display special comamnd list\n";
+    std::cout << ":h --> display special command list\n\n";
     return;
+}
+
+std::deque<FString> FAutoCompleteData::Autocomplete(FString Input)
+{
+    // Strategy: search for a compatible entry via bissection, then "explode" forward
+    // and backward from it to find boundaries of the compatible subset
+
+    bool bSearching = true;                 // "still searching" flag
+    std::deque<FString> Suggestions;        // deque to hold completion suggestions
+    int i1 = 0;                             // indexes to explore the events deque
+    int i2 = OrderedEventNames.size()-1;
+    int ic;
+    int n = Input.length();
+
+    // Finding a compatible entry (bissection)
+
+    if(strcmp(Input.c_str(),OrderedEventNames.front().c_str())<0 || 
+       strcmp(Input.c_str(),OrderedEventNames.back().c_str())>0) {
+        return Suggestions;     // return empty deque if Input is not present on the list
+    }
+     
+    // knowing the entries at begin/end positions are not compatible is
+    // important to later determine if the indexes collapsed and skip to
+    // the "explosion" phase if they are compatible with the input
+    if( strncmp(Input.c_str(),OrderedEventNames.front().c_str(),n) == 0 ){ 
+        bSearching = false;
+        ic = 0;
+    } else if ( strncmp(Input.c_str(),OrderedEventNames.back().c_str(),n) == 0 ){
+        bSearching = false;
+        ic = OrderedEventNames.size()-1;
+    }
+
+    int StrCmp;
+    while(bSearching && (i2-i1)>1){       // while compatible entry was not found and bissection indexes did not collapse
+        ic = ceil((i1+i2)/2);
+        StrCmp = strncmp(Input.c_str(),OrderedEventNames[ic].c_str(),n);
+        if( StrCmp == 0 ){ bSearching = false; }
+        else if (StrCmp < 0){ i2 = ic; }
+        else { i1 = ic; }
+    }
+
+    // Finding boundaries of the compatible subset (explosion) and building Suggestion list
+    if( (i2-i1)>1 ){
+        i1 = ic-1; i2 = ic+1;
+        while( i1>0 && strncmp(Input.c_str(),OrderedEventNames[i1].c_str(),n)==0 ) {
+            Suggestions.push_front(OrderedEventNames[i1]);
+            i1--;}
+        while( i2<OrderedEventNames.size()-1 && strncmp(Input.c_str(),OrderedEventNames[i2].c_str(),n)==0 ) {
+            Suggestions.push_back(OrderedEventNames[i2]);
+            i2++;}
+    }
+
+    // Order suggestions by ocurrences
+
+    return Suggestions;       // FIXME dummy return
 }
