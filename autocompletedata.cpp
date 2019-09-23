@@ -20,7 +20,7 @@ void FAutoCompleteData::EventNamesAlphabetic(FString FileName)
     json &JsonDataRef = JsonData;
     FString EventName = "";
     int InsertionIndex = -1;
-
+    
     ImportJsonData(FileName, OUT JsonDataRef);
     std::cout << "EvenNamesAlphabetic: JsonData size: " << JsonData.size() << std::endl;
     std::cout << "----------------------------------\n";
@@ -79,21 +79,31 @@ void FAutoCompleteData::MakeInsertion(FString EventName )
     return;
 }
 
-EInput CheckInputValidity(FString Input)
+EInput FAutoCompleteData::CheckInputValidity(FString Input)
 {
     if( strcmp(Input.c_str(),":q") == 0 ){
         return EInput::SC_Quit;
     } else if( strcmp(Input.c_str(),":l") == 0 ) {
         return EInput::SC_Show_ACData;
-    } else if ( IsAlphaPair(Input) ){
-        return EInput::Valid_Alpha_Pair;
-    } else{
-        return EInput::Invalid;
+    } else if ( Input.length()<2 ){
+        return EInput::ERR_Too_Short;
+    } else {
+        return EInput::Valid;
     }
 }
 
-bool IsAlphaPair(FString Input)
+void FAutoCompleteData::ShowAccumulatedData()
 {
-    // TODO HERE!! continue from here; implement this check
-    return false;
+    std::cout << "Event Names\t\tOcurences\n";
+    for(int i=0; i<OrderedEventNames.size(); i++){
+        std::cout << OrderedEventNames[i] << "\t\t" << Ocurrences[i] << std::endl;
+    }
+    return;
 }
+
+/*bool FAutoCompleteData::IsAlphaNumOnly(FString Input)
+{
+    FString::size_type Found = Input.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
+    if(Found==FString::npos){ return true; }
+    return false;
+}*/

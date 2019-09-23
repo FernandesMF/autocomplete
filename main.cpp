@@ -40,10 +40,19 @@ int main(int argc, char* argv[])
     // User input loop (while quit command is not given)
     do{
         UserInput = GetUserInput();             // Ask user input
-        // Check input validity (two letters or special command; switch) 
-            // Execute special command
-            // Call autocomplete function
-            // Warn for invalid input
+        switch (ACData.CheckInputValidity(UserInput))
+        {
+        case EInput::ERR_Too_Short :
+            std::cout << "Input was too short. Give at least two characters.";
+            break;
+        case EInput::SC_Show_ACData :
+            std::cout << "Showing accumulated data for autocomplete suggestions:\n";
+            ACData.ShowAccumulatedData();
+            break;
+        case EInput::Valid :
+            std::cout << "Fetching suggestions for \"" << UserInput << "\"\n";
+            std::cout << "(coming soon...)\n";
+        }
     } while(UserInput != ":q");
 
     return 0;
@@ -119,7 +128,7 @@ void PrintSpecialCommands()
 FString GetUserInput()
 {
     FString Input;
-    std::cout << "Please enter: (1) two letters or (2) a special command:\n";
+    std::cout << "Please enter: a string to autocomplete or a special command:\n";
     std::cin >> Input;
     return Input;
 }

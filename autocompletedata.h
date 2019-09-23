@@ -13,8 +13,9 @@ enum class EInput
 {
     SC_Quit,
     SC_Show_ACData,
-    Valid_Alpha_Pair,
-    Invalid
+    ERR_Too_Short,
+//    ERR_Invalid_Character, // I guess every character will be valid for searching...
+    Valid,
 };
 
 class FAutoCompleteData
@@ -25,8 +26,8 @@ class FAutoCompleteData
         void Constructor();
 
         void EventNamesAlphabetic(std::string FileName); // read json data and store it in internal "list"
-
-        // function to return entries that match two beginning letters
+        EInput CheckInputValidity(FString Input);
+        void ShowAccumulatedData();
 
     private:
         //TODO comment on why deque and not set/map or vector
@@ -38,6 +39,6 @@ class FAutoCompleteData
         void ImportJsonData(FString FileName, json &JsonData);  // function to read a Json file
         FString GetEventName(json &JsonData, int index); // reads name of event at index in JsonData
         void MakeInsertion(FString EventName ); // inserts EventName at the correct position
-        bool IsAlphaPair(FString Input)
+ //       bool IsAlphaOnly(FString Input);
 
 };
