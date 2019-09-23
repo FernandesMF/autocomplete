@@ -85,6 +85,8 @@ EInput FAutoCompleteData::CheckInputValidity(FString Input)
         return EInput::SC_Quit;
     } else if( strcmp(Input.c_str(),":l") == 0 ) {
         return EInput::SC_Show_ACData;
+    } else if ( strcmp(Input.c_str(),":h") == 0 ){
+        return EInput::SC_Help;
     } else if ( Input.length()<2 ){
         return EInput::ERR_Too_Short;
     } else {
@@ -101,9 +103,12 @@ void FAutoCompleteData::ShowAccumulatedData()
     return;
 }
 
-/*bool FAutoCompleteData::IsAlphaNumOnly(FString Input)
+void FAutoCompleteData::PrintSpecialCommands()
 {
-    FString::size_type Found = Input.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
-    if(Found==FString::npos){ return true; }
-    return false;
-}*/
+    // list special commands
+    std::cout << "The special commands to interface with this program are the following>\n";
+    std::cout << ":q --> quit\n";
+    std::cout << ":l --> list the data accumulated for suggestions\n";
+    std::cout << ":h --> display special comamnd list\n";
+    return;
+}

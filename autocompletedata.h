@@ -13,6 +13,7 @@ enum class EInput
 {
     SC_Quit,
     SC_Show_ACData,
+    SC_Help,
     ERR_Too_Short,
 //    ERR_Invalid_Character, // I guess every character will be valid for searching...
     Valid,
@@ -27,6 +28,7 @@ class FAutoCompleteData
 
         void EventNamesAlphabetic(std::string FileName); // read json data and store it in internal "list"
         EInput CheckInputValidity(FString Input);
+        void PrintSpecialCommands();
         void ShowAccumulatedData();
 
     private:
