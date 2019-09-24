@@ -25,8 +25,7 @@ int main(int argc, char* argv[])
     catch(const std::runtime_error& e){ 
         std::cerr << e.what() << '\n';
         return 1;
-    }
-    
+    }    
     try{ ACData.EventNamesAlphabetic(argv[1]); }   // collect that data in the collector class
     catch(const std::runtime_error& e){ 
         std::cerr << e.what() << '\n';     
@@ -35,11 +34,11 @@ int main(int argc, char* argv[])
 
     ACData.PrintSpecialCommands();
 
+    // User input loop (while quit command is not given)
     FString UserInput = "";
     std::deque<FString> Suggestions;
-    // User input loop (while quit command is not given)
     do{
-        UserInput = GetUserInput();             // Ask user input
+        UserInput = GetUserInput();
         switch (ACData.CheckInputValidity(UserInput))
         {
         case EInput::ERR_Too_Short :
@@ -78,7 +77,6 @@ bool ArgCountProblem(int argc, char* argv[])
     return false;
 }
 
-// TODO make a longer, more interesting json file (test ocurrence ordering, and similar ocurrences)
 void CreateMockJson(std::string FileName)
 {
     json MockJson;

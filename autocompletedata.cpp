@@ -1,11 +1,9 @@
 #include "autocompletedata.h"
-#define OUT     // useful output reminder
 
 FAutoCompleteData::FAutoCompleteData(){ Constructor(); }
 
 void FAutoCompleteData::Constructor()
 {
-    // will leave OrderedEventNames and Ocurrences empty for now
     std::deque<FString> OrderedEventNames;
     std::deque<int> Ocurrences;
     BegIndex = 0;
@@ -22,15 +20,10 @@ void FAutoCompleteData::EventNamesAlphabetic(FString FileName)
     int InsertionIndex = -1;
     
     ImportJsonData(FileName, OUT JsonDataRef);
-    std::cout << "EvenNamesAlphabetic: JsonData size: " << JsonData.size() << std::endl;
-    std::cout << "----------------------------------\n";
     for(int r = 0; r<JsonData.size() ; r++){
         EventName = GetEventName(JsonData, r);      // get event name
         MakeInsertion(EventName);                   // insert at the appropriate position
     }
-    for(int i=0; i<OrderedEventNames.size(); i++){ std::cout << OrderedEventNames[i] << std::endl;}
-    for(int i=0; i<OrderedEventNames.size(); i++){ std::cout << Ocurrences[i] << std::endl;}
-
     return;
 }
 
