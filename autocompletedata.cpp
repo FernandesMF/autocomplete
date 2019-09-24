@@ -27,10 +27,8 @@ void FAutoCompleteData::EventNamesAlphabetic(FString FileName)
     for(int r = 0; r<JsonData.size() ; r++){
         EventName = GetEventName(JsonData, r);      // get event name
         MakeInsertion(EventName);                   // insert at the appropriate position
-    }       
-    std::cout << "EventNamesAlphabetic: list of event names:\n";    //FIXME remove these prints
+    }
     for(int i=0; i<OrderedEventNames.size(); i++){ std::cout << OrderedEventNames[i] << std::endl;}
-    std::cout << "EventNamesAlphabetic: list of ocurrences:\n";    //FIXME remove these prints
     for(int i=0; i<OrderedEventNames.size(); i++){ std::cout << Ocurrences[i] << std::endl;}
 
     return;
@@ -61,14 +59,19 @@ void FAutoCompleteData::MakeInsertion(FString EventName )
     std::deque<FString>::iterator R = OrderedEventNames.begin();    // pointer to elements of OrderedEventNames
     std::deque<int>::iterator S = Ocurrences.begin();               // pointer to  elements of Ocurrences
     int StrCmp = 0;
-    int s = 0;                                           // usual integer index; needed to increase ocurrences                                          
-    while(R!=OrderedEventNames.end()){
-        StrCmp = strcmp(EventName.c_str(),R->c_str());
-        if(StrCmp == 0){
+    int s = 0;                                 
+    
+    while(R!=OrderedEventNames.end()){                                    
+        StrCmp = strcmp(EventName.c_str(),R->c_str());                                    
+        if(StrCmp == 0){                                    
             Ocurrences[s]++;            //increase ocurrence by 1
             break;
-        } else if(StrCmp > 0){
+        } else if(StrCmp > 0){                                     
             R++; S++; s++;
+        } else {
+            OrderedEventNames.emplace(R,EventName);
+            Ocurrences.emplace(S,1);
+            break;
         }
     }
     if(R==OrderedEventNames.end()){         // if the end of OrderedEventNames was reached

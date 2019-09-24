@@ -106,13 +106,13 @@ void CreateMockJson(std::string FileName)
             {"timestamp","2016-09-23T18:58:31.2311892-04:00"}
         },
         {
-            {"event","cuy-promotion"},
+            {"event","buy-promotion"},
             {"timestamp","2016-09-23T18:58:31.2311892-04:00"}
         },
-        /*{
+        {
             {"event","click"},
             {"timestamp","2016-09-23T18:58:31.2311892-04:00"}
-        },*/
+        },
     };
     WriteJson(FileName,MockJson);
     return;
