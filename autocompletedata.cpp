@@ -48,7 +48,6 @@ void FAutoCompleteData::ImportJsonData(FString FileName, json &JsonData)
     return;
 }
 
-// FIXME use just the line of code, instead of a separate function?
 FString FAutoCompleteData::GetEventName(json &JsonData, int index) { return JsonData[index]["event"].get<FString>(); }
 
 void FAutoCompleteData::MakeInsertion(FString EventName )
@@ -126,13 +125,8 @@ std::deque<FString> FAutoCompleteData::Autocomplete(FString Input)
     int n = Input.length();
 
     // Finding a compatible entry (bissection)
-    std::cout << "Autocomplete: n = " << n << std::endl;         // FIxME remove these prints
-    std::cout << "Autocomplete: strncmp(Input,OENames.front(),n) = " << strcmp(Input.c_str(),OrderedEventNames.front().c_str()) << std::endl;
-    std::cout << "Autocomplete: strncmp(Input,OENames.back(),n) = " << strcmp(Input.c_str(),OrderedEventNames.back().c_str()) << std::endl;
-    std::cout << "Autocomplete: Input = " << Input << " OEnames.front() = " << OrderedEventNames.front() << std::endl;
     if(strncmp(Input.c_str(),OrderedEventNames.front().c_str(),n)<0 || 
        strncmp(Input.c_str(),OrderedEventNames.back().c_str(),n)>0) {
-        std::cout << "Autocomplete: wont find input in this list..\n.";      // FIXME remove this print
         return Suggestions;     // return empty deque if Input is not present on the list
     }
      
@@ -140,43 +134,37 @@ std::deque<FString> FAutoCompleteData::Autocomplete(FString Input)
     // important to later determine if the indexes collapsed and skip to
     // the "explosion" phase if they are compatible with the input
     if( strncmp(Input.c_str(),OrderedEventNames.front().c_str(),n) == 0 ){ 
-        std::cout << "Autocomplete: fisrt entry match\n";      // FIXME remove this print
         bSearching = false;
         ic = 0;
     } else if ( strncmp(Input.c_str(),OrderedEventNames.back().c_str(),n) == 0 ){
-        std::cout << "Autocomplete: last entry match\n";      // FIXME remove this print
         bSearching = false;
         ic = OrderedEventNames.size()-1;
     }
 
     int StrCmp;
-    while(bSearching && (i2-i1)>1){       // while compatible entry was not found and bissection indexes did not collapse
+    while(bSearching && (i2-i1)>1){       // while compatible entry is not found and bissection indexes are not collapsed
         ic = ceil((i1+i2)/2);
-        std::cout << "Autocomplete: ic = " << ic << std::endl;      // FIXME remove this print
         StrCmp = strncmp(Input.c_str(),OrderedEventNames[ic].c_str(),n);
-        if( StrCmp == 0 ){ bSearching = false; std::cout << "Autocomplete: StrCmp =0\n";}      // FIXME remove this print
-        else if (StrCmp < 0){ i2 = ic; std::cout << "Autocomplete: StrCmp<0\n";}      // FIXME remove this print
-        else { i1 = ic; std::cout << "Autocomplete: StrCmp > 0\n";}      // FIXME remove this print
+        if( StrCmp == 0 ){ bSearching = false; }
+        else if (StrCmp < 0){ i2 = ic; }
+        else { i1 = ic;}
     }
 
     // Finding boundaries of the compatible subset (explosion) and building Suggestion list
     if( (i2-i1)>1 ){
         Suggestions.push_front(OrderedEventNames[ic]);
         i1 = ic-1; i2 = ic+1;
-        std::cout << "Autocomplete: began explosion phase\n";      // FIXME remove this print
         while( i1>=0 && strncmp(Input.c_str(),OrderedEventNames[i1].c_str(),n)==0 ) {
             Suggestions.push_front(OrderedEventNames[i1]);
             i1--;
-            std::cout << "Autocomplete: explosion, i1 = " << i1 << std::endl;      // FIXME remove this print
         }
         while( i2<=OrderedEventNames.size()-1 && strncmp(Input.c_str(),OrderedEventNames[i2].c_str(),n)==0 ) {
             Suggestions.push_back(OrderedEventNames[i2]);
             i2++;
-            std::cout << "Autocomplete: explosion, i2 = " << i2 << std::endl;      // FIXME remove this print
         }
     }
 
-    // TODO Order suggestions by ocurrences
-
     return Suggestions;
 }
+
+// TODO Order suggestions by ocurrences
