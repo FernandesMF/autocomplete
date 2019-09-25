@@ -24,6 +24,8 @@ To use the API, call it from from the command line and give the name of the json
 to use as an argument. If you don't have such a file, just give it any name and it will create
 one with mock data.
 
+The frile `main` is the executable that I compiled under Linux Mint 19, feel free to use it if
+it works for you.
 
 ## Compilation
 You will need to use the [JSON for Modern C++ library by Niels Lohmann](https://github.com/nlohmann/json/releases)
