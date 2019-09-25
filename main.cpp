@@ -8,11 +8,10 @@ using json = nlohmann::json;
 #define OUT         // useful tag to remind of output references
 
 bool ArgCountProblem(int, char**);
-void CreateMockJson(std::string);
-void WriteJson(std::string,json);
+void ReadExternalJson(FString);
+void CreateMockJson(FString);
+void WriteJson(FString,json);
 FString GetUserInput();
-
-// TODO write mock json only if it doesn't exist??
 
 FAutoCompleteData ACData;   // start an instance of the autocomplete class (autocompletedata.h) globally
 
@@ -21,7 +20,7 @@ int main(int argc, char* argv[])
     if(ArgCountProblem(argc,argv)){ return 1; } // check command line inputs
 
     // Preparatory steps
-    try{ CreateMockJson(argv[1]); }     // create json file with events
+    try{ ReadExternalJson(argv[1]); }     // create json file with events
     catch(const std::runtime_error& e){ 
         std::cerr << e.what() << '\n';
         return 1;
@@ -77,7 +76,19 @@ bool ArgCountProblem(int argc, char* argv[])
     return false;
 }
 
-void CreateMockJson(std::string FileName)
+void ReadExternalJson(FString FileName)
+{
+    struct stat buf;
+    if( stat(FileName.c_str(), &buf) == 0 ){
+        std::cout << "Found external json file.\n";
+    } else {
+        std::cout << "Could not find this external file. Creating mock json data in a file with that name.\n";
+        CreateMockJson(FileName);
+    }
+    return;
+}
+
+void CreateMockJson(FString FileName)
 {
     json MockJson;
 
@@ -117,12 +128,11 @@ void CreateMockJson(std::string FileName)
 }
 
 // Writes a Json file from a a json variable
-void WriteJson(std::string FileName,json JsonData)
+void WriteJson(FString FileName,json JsonData)
 {
     std::ofstream TimelineFile;
     struct stat buf;
 
-	// FIXME confirm overwriting with the user
     if( stat(FileName.c_str(), &buf) != -1 ){ std::cout << "Warning: output file already exists. Overwriting.\n"; }
     TimelineFile.open(FileName);  
     if( TimelineFile.fail() ){ throw std::runtime_error("Error opening output file."); }

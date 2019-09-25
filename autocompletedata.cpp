@@ -164,3 +164,4 @@ std::deque<FString> FAutoCompleteData::Autocomplete(FString Input)
 }
 
 // TODO Order suggestions by ocurrences
+// TODO Read more json data and append to current

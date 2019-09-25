@@ -33,7 +33,12 @@ class FAutoCompleteData
         std::deque<FString> Autocomplete(FString Input);
 
     private:
-        //TODO comment on why deque and not set/map or vector
+        // We chose to store the event names in a deque structure, and not in a vector or set.
+        // This was because deques do not use contiguous memory adresses, which would be interesting
+        // if we wanted to add more suggestion data on the fly without risking to reallocate a lot
+        // of other things in the memory. A set could be the most interesting structure to use, if
+        // we wanted to use a tree to speed up the searching. I am not very familiar with implementing
+        // trees though, so I chose to use deques.
         std::deque<FString> OrderedEventNames;  // "list" to hold the event names (in alphabetical order)
         std::deque<int> Ocurrences;             // "list" to hold ocurrences (and make suggestions based on that)
         int BegIndex;                           // indexes of first and last entries that will have to be returned
